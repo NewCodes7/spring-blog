@@ -1,5 +1,6 @@
 package me.newcodes.blog.service;
 
+import java.util.List;
 import me.newcodes.blog.domain.Article;
 import me.newcodes.blog.dto.AddArticleRequest;
 import me.newcodes.blog.repository.BlogRepository;
@@ -17,5 +18,9 @@ public class BlogService {
 
     public Article save(AddArticleRequest request) {
         return blogRepository.save(request.toEntity());
+    }
+
+    public List<Article> findAll() {
+        return blogRepository.findAll();
     }
 }

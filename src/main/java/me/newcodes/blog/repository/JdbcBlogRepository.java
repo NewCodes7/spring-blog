@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.sql.DataSource;
 import me.newcodes.blog.domain.Article;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -20,9 +21,11 @@ public class JdbcBlogRepository implements BlogRepository {
     @Override
     public Article save(Article article) {
         String sql = "insert into article(title, content) values(?, ?)";
+
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -46,9 +49,11 @@ public class JdbcBlogRepository implements BlogRepository {
     @Override
     public List<Article> findAll() {
         String sql = "select * from article";
+
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
@@ -69,31 +74,33 @@ public class JdbcBlogRepository implements BlogRepository {
         }
     }
 
-//    @Override
-//    public Optional<Article> findByName(String name) {
-//        String sql = "select * from member where name = ?";
-//        Connection conn = null;
-//        PreparedStatement pstmt = null;
-//        ResultSet rs = null;
-//        try {
-//            conn = getConnection();
-//            pstmt = conn.prepareStatement(sql);
-//            pstmt.setString(1, name);
-//            rs = pstmt.executeQuery();
-//            if(rs.next()) {
-//                Article article = new Article();
-//                article.setId(rs.getLong("id"));
-//                article.setTitle(rs.getString("title"));
-//                article.setContent(rs.getString("content"));
-//                return Optional.of(article);
-//            }
-//            return Optional.empty();
-//        } catch (Exception e) {
-//            throw new IllegalStateException(e);
-//        } finally {
-//            close(conn, pstmt, rs);
-//        }
-//    }
+    @Override
+    public Optional<Article> findById(Long id) {
+        String sql = "select * from article where id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, id);
+            rs = pstmt.executeQuery();
+            if(rs.next()) {
+                Article article = new Article();
+                article.setId(rs.getLong("id"));
+                article.setTitle(rs.getString("title"));
+                article.setContent(rs.getString("content"));
+                return Optional.of(article);
+            }
+            return Optional.empty();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
 
     private Connection getConnection() {
         return DataSourceUtils.getConnection(dataSource);

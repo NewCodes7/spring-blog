@@ -102,6 +102,28 @@ public class JdbcBlogRepository implements BlogRepository {
         }
     }
 
+    @Override
+    public void deleteById(Long id) {
+        String sql = "delete from article where id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, id);
+            int affectedRows = pstmt.executeUpdate(); // executeUpdate를 사용하여 영향을 받은 행의 수를 반환
+            if (affectedRows == 0) {
+                throw new IllegalStateException("No article deleted with id: " + id);
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, null);
+        }
+    }
+
     private Connection getConnection() {
         return DataSourceUtils.getConnection(dataSource);
     }
@@ -134,30 +156,3 @@ public class JdbcBlogRepository implements BlogRepository {
         DataSourceUtils.releaseConnection(conn, dataSource);
     }
 }
-
-//    @Override
-//    public Optional<Member> findById(Long id) {
-//        String sql = "select * from member where id = ?";
-//        Connection conn = null;
-//        PreparedStatement pstmt = null;
-//        ResultSet rs = null;
-//        try {
-//            conn = getConnection();
-//            pstmt = conn.prepareStatement(sql);
-//            pstmt.setLong(1, id);
-//            rs = pstmt.executeQuery();
-//            if(rs.next()) {
-//                Member member = new Member();
-//                member.setId(rs.getLong("id"));
-//                member.setName(rs.getString("name"));
-//                return Optional.of(member);
-//            } else {
-//                return Optional.empty();
-//            }
-//        } catch (Exception e) {
-//            throw new IllegalStateException(e);
-//        } finally {
-//            close(conn, pstmt, rs);
-//        }
-//    }
-

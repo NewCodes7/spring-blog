@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BlogRepository {
     Article save(Article article);
-    Optional<Article> findById(Long id);
-//    Optional<Member> findByName(String name);
     List<Article> findAll();
+    Optional<Article> findById(Long id);
+    void deleteById(Long id);
 }

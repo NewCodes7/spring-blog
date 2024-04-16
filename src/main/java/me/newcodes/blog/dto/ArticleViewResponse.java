@@ -8,6 +8,9 @@ public class ArticleViewResponse {
     private String title;
     private String content;
 
+    public ArticleViewResponse() {
+    }
+
     public ArticleViewResponse(Article article) {
         this.id = article.getId();
         this.title = article.getTitle();

@@ -11,4 +11,5 @@ public interface BlogRepository {
     List<Article> findAll();
     Optional<Article> findById(Long id);
     void deleteById(Long id);
+    void update(Article article);
 }

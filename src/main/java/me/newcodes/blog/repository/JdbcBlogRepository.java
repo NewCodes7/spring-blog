@@ -124,6 +124,27 @@ public class JdbcBlogRepository implements BlogRepository {
         }
     }
 
+    @Override
+    public void update(Article article) {
+        String sql = "update article set title = ?, content = ? where id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, article.getTitle());
+            pstmt.setString(2, article.getContent());
+            pstmt.setLong(3, article.getId());
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, null);
+        }
+    }
+
     private Connection getConnection() {
         return DataSourceUtils.getConnection(dataSource);
     }

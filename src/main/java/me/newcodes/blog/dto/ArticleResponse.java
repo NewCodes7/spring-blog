@@ -3,7 +3,6 @@ package me.newcodes.blog.dto;
 import me.newcodes.blog.domain.Article;
 
 public class ArticleResponse {
-
     private final String title;
     private final String content;
 

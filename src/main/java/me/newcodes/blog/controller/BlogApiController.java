@@ -4,6 +4,7 @@ import java.util.List;
 import me.newcodes.blog.domain.Article;
 import me.newcodes.blog.dto.AddArticleRequest;
 import me.newcodes.blog.dto.ArticleResponse;
+import me.newcodes.blog.dto.UpdateArticleRequest;
 import me.newcodes.blog.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,5 +53,14 @@ public class BlogApiController {
 
         return ResponseEntity.ok()
                 .build();
+    }
+
+    @PutMapping("/api/articles/{id}")
+    public ResponseEntity<Article> updateArticle(@PathVariable long id,
+                                                 @RequestBody UpdateArticleRequest request) {
+        Article updatedArticle = blogService.update(id, request);
+
+        return ResponseEntity.ok()
+                .body(updatedArticle);
     }
 }

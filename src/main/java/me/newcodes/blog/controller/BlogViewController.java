@@ -2,6 +2,7 @@ package me.newcodes.blog.controller;
 
 import me.newcodes.blog.domain.Article;
 import me.newcodes.blog.dto.ArticleListViewResponse;
+import me.newcodes.blog.dto.ArticleViewResponse;
 import me.newcodes.blog.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,14 @@ public class BlogViewController {
         model.addAttribute("articles", articles);
 
         return "articleList";
+    }
+
+    @GetMapping("/articles/{id}")
+    public String getArticle(@PathVariable Long id, Model model) {
+        Article article = blogService.findById(id);
+        model.addAttribute("article", new ArticleViewResponse(article));
+
+        return "article";
     }
 
 }

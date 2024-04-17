@@ -1,22 +1,16 @@
 package me.newcodes.blog.dto;
 
-import me.newcodes.blog.domain.Article;
-
-public class AddArticleRequest {
+public class UpdateArticleRequest {
+    private Long id;
     private String title;
     private String content;
 
-    public AddArticleRequest(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public Long getId() {
+        return id;
     }
 
-    public Article toEntity() {
-        Article article = new Article();
-        article.setTitle(title);
-        article.setContent(content);
-
-        return article;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {

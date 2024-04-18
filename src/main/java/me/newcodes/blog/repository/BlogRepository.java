@@ -5,7 +5,6 @@ import java.util.Optional;
 import me.newcodes.blog.domain.Article;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface BlogRepository {
     Article save(Article article);
     List<Article> findAll();

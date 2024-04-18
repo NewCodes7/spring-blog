@@ -29,7 +29,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public WebSecurityCustomizer configure() { // 왜 정적 리소스, h2에 기능 제한하는 거지?
+    public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
                 .requestMatchers(toH2Console())
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
